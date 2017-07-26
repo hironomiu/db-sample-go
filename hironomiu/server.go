@@ -10,7 +10,6 @@ import (
 
 	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/bot"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/controller"
-	//"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/db"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
@@ -35,13 +34,6 @@ func NewServer() *Server {
 
 // Init はサーバーを初期化します
 func (s *Server) Init(dbconf, env string) error {
-	//cs, err := db.NewConfigsFromFile(dbconf)
-	//if err != nil {
-//		return err
-//	}
-
-	//db, err := cs.Open(env)
-
         db, err := sql.Open("mysql", "root:redash@tcp(172.18.0.2:3306)/redash")
 	if err != nil {
 		return err
@@ -64,12 +56,6 @@ func (s *Server) Init(dbconf, env string) error {
 	})
 
 	msgStream := make(chan *model.Message)
-	mctr := &controller.Message{DB: db, Stream: msgStream}
-	api.GET("/messages", mctr.All)
-	api.GET("/messages/:id", mctr.GetByID)
-	api.POST("/messages", mctr.Create)
-	api.PUT("/messages/:id", mctr.UpdateByID)
-	api.DELETE("/messages/:id", mctr.DeleteByID)
 
 	hctr := &controller.Hoge{DB: db, Stream: msgStream}
 	api.GET("/hoge", hctr.All)
