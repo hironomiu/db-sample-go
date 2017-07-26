@@ -1,14 +1,13 @@
 package main
 
 import (
-	"context"
+	//"context"
 	"database/sql"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/bot"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/controller"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/model"
 	"github.com/gin-gonic/gin"
@@ -20,9 +19,6 @@ import (
 type Server struct {
 	db          *sql.DB
 	Engine      *gin.Engine
-	multicaster *bot.Multicaster
-	poster      *bot.Poster
-	bots        []*bot.Bot
 }
 
 // NewServer は新しいServerの構造体のポインタを返します
@@ -61,20 +57,6 @@ func (s *Server) Init(dbconf, env string) error {
 	api.GET("/hoge", hctr.All)
 	api.GET("/hoge/:id", hctr.GetByID)
 
-	// bot
-	mc := bot.NewMulticaster(msgStream)
-	s.multicaster = mc
-
-	poster := bot.NewPoster(10)
-	s.poster = poster
-
-	helloWorldBot := bot.NewHelloWorldBot(s.poster.In)
-	s.bots = append(s.bots, helloWorldBot)
-	omikujiBot := bot.NewOmikujiBot(s.poster.In)
-	s.bots = append(s.bots, omikujiBot)
-	keywordBot := bot.NewKeywordBot(s.poster.In)
-	s.bots = append(s.bots, keywordBot)
-
 	return nil
 }
 
@@ -85,18 +67,6 @@ func (s *Server) Close() error {
 
 // Run はサーバーを起動します
 func (s *Server) Run(port string) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	// botを起動
-	go s.multicaster.Run(ctx)
-	go s.poster.Run(ctx, fmt.Sprintf("http://0.0.0.0:%s", port))
-
-	for _, b := range s.bots {
-		go b.Run(ctx)
-		s.multicaster.BotIn <- b
-	}
-
 	s.Engine.Run(fmt.Sprintf(":%s", port))
 }
 
