@@ -8,8 +8,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/controller"
-	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/hironomiu/model"
+	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/controller"
+	"github.com/VG-Tech-Dojo/vg-1day-2017-06-17/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
         _ "github.com/go-sql-driver/mysql"
