@@ -13,7 +13,7 @@ import (
 // Message is controller for requests to messages
 type Hoge struct {
 	DB     *sql.DB
-	Stream chan *model.Message
+	Stream chan *model.Hoge
 }
 
 // All は全てのメッセージを取得してJSONで返します
@@ -26,7 +26,7 @@ func (h *Hoge) All(c *gin.Context) {
 	}
 
 	if len(msgs) == 0 {
-		c.JSON(http.StatusOK, make([]*model.Message, 0))
+		c.JSON(http.StatusOK, make([]*model.Hoge, 0))
 		return
 	}
 

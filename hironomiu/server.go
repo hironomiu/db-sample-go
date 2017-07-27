@@ -51,7 +51,7 @@ func (s *Server) Init(dbconf, env string) error {
 		c.String(http.StatusOK, "pong")
 	})
 
-	msgStream := make(chan *model.Message)
+	msgStream := make(chan *model.Hoge)
 
 	hctr := &controller.Hoge{DB: db, Stream: msgStream}
 	api.GET("/hoge", hctr.All)
