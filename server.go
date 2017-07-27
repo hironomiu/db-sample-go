@@ -1,7 +1,6 @@
 package main
 
 import (
-	//"context"
 	"database/sql"
 	"flag"
 	"fmt"
@@ -29,7 +28,7 @@ func NewServer() *Server {
 }
 
 // Init はサーバーを初期化します
-func (s *Server) Init(dbconf, env string) error {
+func (s *Server) Init() error {
         db, err := sql.Open("mysql", "root:redash@tcp(172.18.0.2:3306)/redash")
 	if err != nil {
 		return err
@@ -72,14 +71,12 @@ func (s *Server) Run(port string) {
 
 func main() {
 	var (
-		dbconf = flag.String("dbconf", "dbconfig.yml", "database configuration file.")
-		env    = flag.String("env", "development", "application envirionment (production, development etc.)")
 		port   = flag.String("port", "8080", "listening port.")
 	)
 	flag.Parse()
 
 	s := NewServer()
-	if err := s.Init(*dbconf, *env); err != nil {
+	if err := s.Init(); err != nil {
 		log.Fatalf("fail to init server: %s", err)
 	}
 	defer s.Close()
