@@ -1,31 +1,9 @@
-vg-1day-2017
+db-sample-go
 ---
 
 ## 概要
 
-vg-1day-2017 で使う予定のサンプルアプリです。
-
 サーバーサイドはgolang、クライアントサイドはHTML, Vue.jsで実装されています。
-
-## docker環境
-
-インターンに必須ではありませんが、go1.8.1が入ったdocker環境を用意しました。
-
-- [Docker for Mac](https://docs.docker.com/engine/installation/mac/#/docker-for-mac)
-
-をインストールして `docker` と `docker-compose` コマンドが使えれば動きます。
-
-```
-$ pwd
-/Users/s-sasamoto/src/github.com/VG-Tech-Dojo/vg-1day-2017
-$ make docker_server
-
-# foregroundで実行したい場合
-$ make docker_server backgroud_option=
-
-# なにかおかしいなと感じた時
-$ make docker_clean
-```
 
 ## 参考リンク
 
