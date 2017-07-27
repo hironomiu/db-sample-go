@@ -7,8 +7,10 @@ db-sample-go
 
 ## set up
 
+```
 $ make install
 $ make watch
+```
 
 ## 参考リンク
 
