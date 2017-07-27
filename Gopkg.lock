@@ -8,6 +8,12 @@
   version = "v1.1.4"
 
 [[projects]]
+  name = "github.com/go-sql-driver/mysql"
+  packages = ["."]
+  revision = "a0583e0143b1624142adab07e0e97fe106d99561"
+  version = "v1.3"
+
+[[projects]]
   branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
@@ -58,6 +64,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d8ed872268e132102fc162de85bda349f2323384975297ed906b27187a083f80"
+  inputs-digest = "ba83f982b13d1020dd30c5c444e58e786eddf89ed28dc21194949eaea4027e92"
   solver-name = "gps-cdcl"
   solver-version = 1

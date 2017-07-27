@@ -22,7 +22,7 @@ deps:
 	which golint || go get -u github.com/golang/lint/golint
 
 ## Install dependency packages, cache compiled packages
-install: deps env/env.go dev.db
+install: deps
 	dep ensure
 	go install
 
