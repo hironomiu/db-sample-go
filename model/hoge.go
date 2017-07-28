@@ -2,10 +2,13 @@ package model
 
 import (
 	"database/sql"
+	"strconv"
 )
 
 type Hoge struct {
-	ID       int64  `json:"id"`
+	ID   int64  `json:"id"`
+	Col1 string `json:"col1"`
+	Col2 string `json:"col2"`
 }
 
 func HogeAll(db *sql.DB) ([]*Hoge, error) {
@@ -40,4 +43,22 @@ func HogeByID(db *sql.DB, id string) (*Hoge, error) {
 	}
 
 	return m, nil
+}
+
+func (h *Hoge) Insert(db *sql.DB) (*Hoge, error) {
+	var c, _ = strconv.Atoi(h.Col1)
+	res, err := db.Exec(`insert into hoge(id,col1,col2) values(null,?,?)`, c, h.Col2)
+	if err != nil {
+		return nil, err
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	return &Hoge{
+		ID:   id,
+		Col1: h.Col1,
+		Col2: h.Col2,
+	}, nil
+
 }

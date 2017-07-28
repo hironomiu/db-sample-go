@@ -10,14 +10,14 @@ import (
 	"github.com/VG-Tech-Dojo/db-sample-go/controller"
 	"github.com/VG-Tech-Dojo/db-sample-go/model"
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
-        _ "github.com/go-sql-driver/mysql"
 )
 
 // Server はAPIサーバーが実装された構造体です
 type Server struct {
-	db          *sql.DB
-	Engine      *gin.Engine
+	db     *sql.DB
+	Engine *gin.Engine
 }
 
 // NewServer は新しいServerの構造体のポインタを返します
@@ -29,11 +29,11 @@ func NewServer() *Server {
 
 // Init はサーバーを初期化します
 func (s *Server) Init() error {
-        db, err := sql.Open("mysql", "root:redash@tcp(172.18.0.2:3306)/redash")
+	db, err := sql.Open("mysql", "root:redash@tcp(172.18.0.2:3306)/redash")
 	if err != nil {
 		return err
 	}
-        //defer db.Close()
+	//defer db.Close()
 	s.db = db
 
 	// routing
@@ -54,6 +54,7 @@ func (s *Server) Init() error {
 
 	hctr := &controller.Hoge{DB: db, Stream: msgStream}
 	api.GET("/hoge", hctr.All)
+	api.POST("/hoge", hctr.Create)
 	api.GET("/hoge/:id", hctr.GetByID)
 
 	return nil
@@ -71,7 +72,7 @@ func (s *Server) Run(port string) {
 
 func main() {
 	var (
-		port   = flag.String("port", "8080", "listening port.")
+		port = flag.String("port", "8080", "listening port.")
 	)
 	flag.Parse()
 

@@ -2,7 +2,7 @@ package controller
 
 import (
 	"database/sql"
-	//"errors"
+	"errors"
 	"net/http"
 
 	"github.com/VG-Tech-Dojo/db-sample-go/httputil"
@@ -57,3 +57,30 @@ func (m *Hoge) GetByID(c *gin.Context) {
 	})
 }
 
+func (h *Hoge) Create(c *gin.Context) {
+	var hoge model.Hoge
+	if c.Request.ContentLength == 0 {
+		resp := httputil.NewErrorResponse(errors.New("body is missing"))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	if err := c.BindJSON(&hoge); err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	inserted, err := hoge.Insert(h.DB)
+
+	if err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"result": inserted,
+		"error":  nil,
+	})
+}
