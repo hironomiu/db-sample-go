@@ -5,17 +5,27 @@ db-sample-go
 
 サーバーサイドはgolang、クライアントサイドはHTML, Vue.jsで実装されています。
 
+## 事前(参考)設定
+GOROOT、GOPATH、PATHが設定されていること。以下は`~/go`がGOPATHとして設定されている前提での参考設定
+
+```
+export GOROOT=/usr/local/go
+export GOPATH=~/go
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOPATH/bin
+```
+
 ## set up
+依存関係の解決、必要なパッケージなどを取得します。
 
 ```
 $ make install
-$ make watch
 ```
 
-## 参考リンク
+## run
+httpをPORT8080でlistenします。
 
-[gin-gonic/gin: Gin is a HTTP web framework written in Go (Golang). It features a Martini-like API with much better performance -- up to 40 times faster. If you need smashing performance, get yourself some Gin.](https://github.com/gin-gonic/gin)
-
-
-[A progressive, incrementally-adoptable JavaScript framework for building UI on the web.](https://jp.vuejs.org)
+```
+$ make watch
+```
 
