@@ -56,6 +56,8 @@ func (s *Server) Init() error {
 	api.GET("/hoge", hctr.All)
 	api.POST("/hoge", hctr.Create)
 	api.GET("/hoge/:id", hctr.GetByID)
+	api.PUT("/hoge/:id", hctr.UpdateByID)
+	api.DELETE("/hoge/:id", hctr.DeleteByID)
 
 	return nil
 }

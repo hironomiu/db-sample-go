@@ -36,7 +36,6 @@ func (h *Hoge) All(c *gin.Context) {
 	})
 }
 
-// GetByID はパラメーターで受け取ったidのメッセージを取得してJSONで返します
 func (m *Hoge) GetByID(c *gin.Context) {
 	msg, err := model.HogeByID(m.DB, c.Param("id"))
 
@@ -81,6 +80,39 @@ func (h *Hoge) Create(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"result": inserted,
+		"error":  nil,
+	})
+}
+
+func (m *Hoge) UpdateByID(c *gin.Context) {
+	var hoge model.Hoge
+	if err := c.BindJSON(&hoge); err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	updated, err := hoge.UpdateByID(m.DB, c.Param("id"))
+	if err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{
+		"result": updated,
+		"error":  nil,
+	})
+}
+
+func (m *Hoge) DeleteByID(c *gin.Context) {
+	var hoge model.Hoge
+	deleted, err := hoge.DeleteByID(m.DB, c.Param("id"))
+	if err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{
+		"result": deleted,
 		"error":  nil,
 	})
 }

@@ -51,14 +51,42 @@ func (h *Hoge) Insert(db *sql.DB) (*Hoge, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	id, err := res.LastInsertId()
 	if err != nil {
 		return nil, err
 	}
+
 	return &Hoge{
 		ID:   id,
 		Col1: h.Col1,
 		Col2: h.Col2,
 	}, nil
+}
 
+func (h *Hoge) UpdateByID(db *sql.DB, id string) (*Hoge, error) {
+	var col1, _ = strconv.ParseInt(h.Col1, 10, 64)
+	_, err := db.Exec(`update hoge set col1 = ? ,col2 = ? where id = ?`, col1, h.Col2, id)
+
+	if err != nil {
+		return nil, err
+	}
+	var c, _ = strconv.ParseInt(id, 10, 64)
+	return &Hoge{
+		ID:   c,
+		Col1: h.Col1,
+		Col2: h.Col2,
+	}, nil
+}
+
+func (h *Hoge) DeleteByID(db *sql.DB, id string) (*Hoge, error) {
+	_, err := db.Exec(`delete from hoge where id = ?`, id)
+
+	if err != nil {
+		return nil, err
+	}
+	var c, _ = strconv.ParseInt(id, 10, 64)
+	return &Hoge{
+		ID: c,
+	}, nil
 }
