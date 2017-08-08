@@ -56,6 +56,26 @@ func (m *Hoge) GetByID(c *gin.Context) {
 	})
 }
 
+func (m *Hoge) GetByLimitOffset(c *gin.Context) {
+	msg, err := model.HogeByLimitOffset(m.DB, c.Param("lid"), c.Param("oid"))
+
+	switch {
+	case err == sql.ErrNoRows:
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusNotFound, resp)
+		return
+	case err != nil:
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": msg,
+		"error":  nil,
+	})
+}
+
 func (h *Hoge) Create(c *gin.Context) {
 	var hoge model.Hoge
 	if c.Request.ContentLength == 0 {

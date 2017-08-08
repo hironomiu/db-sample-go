@@ -37,12 +37,34 @@ func HogeAll(db *sql.DB) ([]*Hoge, error) {
 func HogeByID(db *sql.DB, id string) (*Hoge, error) {
 	m := &Hoge{}
 
-	// 1-1. ユーザー名を表示しよう
 	if err := db.QueryRow(`select id from hoge where id = ?`, id).Scan(&m.ID); err != nil {
 		return nil, err
 	}
 
 	return m, nil
+}
+
+func HogeByLimitOffset(db *sql.DB, lid string, oid string) ([]*Hoge, error) {
+	rows, err := db.Query(`select id from hoge limit ?,?`, lid, oid)
+	//rows, err := db.Query(`select id from hoge limit 1`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var ms []*Hoge
+	for rows.Next() {
+		m := &Hoge{}
+		if err := rows.Scan(&m.ID); err != nil {
+			return nil, err
+		}
+		ms = append(ms, m)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return ms, nil
 }
 
 func (h *Hoge) Insert(db *sql.DB) (*Hoge, error) {
